@@ -57,4 +57,16 @@ impl Matrix {
                 .collect(),
         })
     }
+
+    /// Only work with vector (n by 1 matrix)
+    pub fn dot_with(&self, other: &Self) -> Option<f64> {
+        if self.size() != other.size() || self.size().1 != 1 {
+            return None;
+        }
+
+        let this = self.items.get(0).unwrap();
+        let that = other.items.get(0).unwrap();
+
+        this.iter().zip(that.iter()).map(|v| v.0 * v.1).reduce(|acc, v| acc + v)
+    }
 }
