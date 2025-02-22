@@ -73,7 +73,7 @@ impl Matrix {
             .reduce(|acc, v| acc + v)
     }
 
-    /// Only work with 3 by 3 matrix
+    /// Only work with 3 by 1 matrix
     pub fn cross_with(&self, other: &Matrix) -> Option<Self> {
         if self.size() != (3, 1) || other.size() != (3, 1) {
             return None;
