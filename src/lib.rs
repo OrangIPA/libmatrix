@@ -67,6 +67,27 @@ impl Matrix {
         let this = self.items.get(0).unwrap();
         let that = other.items.get(0).unwrap();
 
-        this.iter().zip(that.iter()).map(|v| v.0 * v.1).reduce(|acc, v| acc + v)
+        this.iter()
+            .zip(that.iter())
+            .map(|v| v.0 * v.1)
+            .reduce(|acc, v| acc + v)
+    }
+
+    /// Only work with 3 by 3 matrix
+    pub fn cross_with(&self, other: &Matrix) -> Option<Self> {
+        if self.size() != (3, 1) || other.size() != (3, 1) {
+            return None;
+        }
+
+        let this = self.items.get(0).unwrap();
+        let that = other.items.get(0).unwrap();
+
+        let res: Vec<f64> = vec![
+            this[1] * that[2] - this[2] * that[1],
+            this[2] * that[0] - this[0] * that[2],
+            this[0] * that[1] - this[1] * that[0],
+        ];
+
+        Some(Self { items: vec![res] })
     }
 }
