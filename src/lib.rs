@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Matrix {
     items: Vec<Vec<f64>>,
 }
@@ -41,6 +41,22 @@ impl Matrix {
         *i = val;
 
         Some(())
+    }
+
+    pub fn transpose(&self) -> Matrix {
+        let mut temp: Vec<Vec<f64>> = vec![];
+
+        for (i, columns) in self.items.iter().enumerate() {
+            for (j, row) in columns.iter().enumerate() {
+                if i == 0 {
+                    temp.push(vec![*row]);
+                } else {
+                    temp.get_mut(j).unwrap().push(*row);
+                }
+            }
+        }
+
+        Self { items: temp }
     }
 
     pub fn add_with(&self, other: &Self) -> Option<Matrix> {
