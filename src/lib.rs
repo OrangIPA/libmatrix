@@ -74,6 +74,31 @@ impl Matrix {
         })
     }
 
+    /// self is in the left and other is in the right
+    pub fn mul_with(&self, other: &Self) -> Option<Matrix> {
+        if self.size().1 != other.size().0 {
+            return None;
+        }
+
+        let mut temp: Vec<Vec<f64>> = vec![];
+
+        for rights in other.items.iter() {
+            temp.push(vec![]);
+
+            for lefts in self.transpose().items.iter() {
+                let sum = rights
+                    .iter()
+                    .enumerate()
+                    .map(|(ii, v)| v * lefts.get(ii).unwrap())
+                    .reduce(|acc: f64, v: f64| acc + v)
+                    .unwrap_or(0.);
+                temp.last_mut().unwrap().push(sum);
+            }
+        }
+
+        Some(Self { items: temp })
+    }
+
     /// Only work with vector (n by 1 matrix)
     pub fn dot_with(&self, other: &Self) -> Option<f64> {
         if self.size() != other.size() || self.size().1 != 1 {
